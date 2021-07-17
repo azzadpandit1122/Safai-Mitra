@@ -3,11 +3,13 @@ package com.example.safai_mitra;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,14 +41,37 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.rowDescription.setText(arrayList.get(position).getDecription());
         holder.rowLocation.setText(arrayList.get(position).getLocation());
         holder.rowprofileIcon.setImageResource(arrayList.get(position).getProfileIcon());
-        holder.delete.setOnClickListener(new View.OnClickListener() {
+
+        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show();
-                Log.d("delete", "Yes Clicked item is deleted ");
-                arrayList.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, arrayList.size());
+            public void onClick(View view) {
+
+                //creating a popup menu
+                PopupMenu popup = new PopupMenu(context, holder.buttonViewOption);
+                //inflating menu from xml resource
+                popup.inflate(R.menu.options_menu);
+                //adding click listener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.menu1:
+                                //handle menu1 click
+                                return true;
+                            case R.id.menu2:
+                                //handle menu2 click
+                                return true;
+                            case R.id.menu3:
+                                //handle menu3 click
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                //displaying the popup
+                popup.show();
+
             }
         });
     }
@@ -58,17 +83,17 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final Context context;
-        ImageView delete, rowImage, rowprofileIcon;
+        ImageView delete, rowImage, rowprofileIcon, buttonViewOption;
         TextView rowName, rowLocation, rowDescription;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            buttonViewOption = itemView.findViewById(R.id.buttonViewOption);
             rowName = itemView.findViewById(R.id.textView);
             rowprofileIcon = itemView.findViewById(R.id.imageView2);
             rowImage = itemView.findViewById(R.id.imageView);
             rowDescription = itemView.findViewById(R.id.textView2);
             rowLocation = itemView.findViewById(R.id.textView3);
-            delete = itemView.findViewById(R.id.imageButtonFireNumberDelete);
             context = itemView.getContext();
         }
     }
